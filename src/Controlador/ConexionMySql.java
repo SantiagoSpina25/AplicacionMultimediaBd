@@ -52,5 +52,20 @@ public class ConexionMySql {
             Statement stmt = connection.createStatement();
             return stmt.executeUpdate(consulta);
         }
+        
+        public boolean existeTabla(String tabla) throws SQLException{
+            boolean existe = false;
+            
+            //DatabaseMetaData es una clase que contiene la informacion de la base de datos
+            DatabaseMetaData metaData = connection.getMetaData();
+            
+            //getTables devuelve si la tabla con el nombre introducido existe
+            ResultSet tablas = metaData.getTables(null,null,tabla,null);
+            
+            if (tablas.next()) {
+                existe = true;
+            } 
+            return existe;
+        }
     
 }
