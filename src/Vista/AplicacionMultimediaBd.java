@@ -23,35 +23,35 @@ public class AplicacionMultimediaBd {
                 System.out.println("Que desea realizar?");
                 System.out.println("1. SELECT");
                 System.out.println("2. INSERT");
-                System.out.println("3. DELETE");
-                System.out.println("4. SALIR");
+                System.out.println("3. UPDATE");
+                System.out.println("4. DELETE");
+                System.out.println("5. SALIR");
 
                eleccion = sc.nextInt();
 
                 switch (eleccion) {
                     case 1://SELECT
-                        consultasSelect(conexion);
+                        conexion.consultasSelect();
                         break;
                     case 2://INSERT
-
+                        conexion.insertarDato();
                         break;
-                    case 3://DELETE
-
+                    case 3://UPDATE
+                        conexion.actualizarDato();
                         break;
-                    case 4://Desconectar
+                    case 4://DELETE
+                        conexion.borrarDato();
+                        break;
+                    case 5://salir
                         System.out.println("Saliendo...");
-
-                            conexion.desconectar();
-
-
-
-
+                        conexion.desconectar();
                         break;
-                    default:
+                    case 6: 
                         System.out.println("Indica un numero correcto");
+                        break;
                 }
-                System.out.println("");
-            } while (eleccion != 4);   
+                 System.out.println("------------------------------------------");
+            } while (eleccion != 5);   
             
         } catch (SQLException e) {
             System.out.println("Error en la conexion");
@@ -62,38 +62,6 @@ public class AplicacionMultimediaBd {
         
     }
     
-     private static void consultasSelect(ConexionMySql conexion) throws SQLException {
-         Scanner sc = new Scanner(System.in);
-         
-         System.out.println("------------------------------------------");
-         System.out.println("Escriba la tabla que quiere seleccionar");
-         String tablaSeleccionada = sc.next();
-         
-         if(conexion.existeTabla(tablaSeleccionada)){
-             System.out.println("");
-             System.out.println("Que atributo desea seleccionar?");
-             String atributoSeleccionado = sc.next();
-             
-             System.out.println("Alguna condicion? (Presione 1 para omitr)");
-             String condicionSeleccionada = sc.next();
-             
-             if(condicionSeleccionada.equals("1")){
-                 condicionSeleccionada = "";
-             }
-             
-             ResultSet rs = conexion.ejecutarSelect("select  " + atributoSeleccionado + " from " + tablaSeleccionada + " " + condicionSeleccionada);
-             
-             while(rs.next()){
-                System.out.println("----------"+tablaSeleccionada+"----------");
-                System.out.println(rs.getString(atributoSeleccionado));
-                System.out.println("");
-             }
-             
-             
-         }else{
-             System.out.println("La tabla introducida no existe");
-         }
-       
-    }
+     
     
 }

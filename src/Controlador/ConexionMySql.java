@@ -3,6 +3,8 @@ package Controlador;
 
 
 import java.sql.*;
+import java.util.Arrays;
+import java.util.Scanner;
 /**
  *
  * @author MEDAC
@@ -67,5 +69,132 @@ public class ConexionMySql {
             } 
             return existe;
         }
+        
+        public void consultasSelect() throws SQLException {
+         Scanner sc = new Scanner(System.in);
+         
+         System.out.println("------------------------------------------");
+         System.out.println("Escriba la tabla que quiere seleccionar");
+         String tablaSeleccionada = sc.next();
+         
+         if(existeTabla(tablaSeleccionada)){
+             System.out.println("");
+             System.out.println("Que atributo(s) desea seleccionar? (separe con comas, por ejemplo: nombre, edad, ciudad)");
+             sc.nextLine(); 
+             
+             String atributosSeleccionados = sc.nextLine();
+             
+             System.out.println("Alguna condicion? (Presione 1 para omitr)");
+             
+             String condicionSeleccionada = sc.nextLine();
+             
+             if(condicionSeleccionada.equals("1")){
+                 condicionSeleccionada = "";
+             }
+             
+             System.out.println("select " + atributosSeleccionados + " from " + tablaSeleccionada + " " + condicionSeleccionada);
+             
+             ResultSet rs = ejecutarSelect("select  " + atributosSeleccionados + " from " + tablaSeleccionada + " " + condicionSeleccionada);
+             System.out.println("----------"+tablaSeleccionada+"----------");
+                
+             String [] atributos = atributosSeleccionados.split(",");
+             
+             //Por cada registro encontrado, muestro cada uno de sus atributos
+             while(rs.next()){
+                 System.out.print("- ");
+                 for (int i = 0; i < atributos.length; i++) {
+                    //Borro los espacios entre cada atributo
+                    String atributo = atributos[i].trim();
+                    System.out.print(atributo + ": " + rs.getString(atributo) + " | ");
+                 }
+                System.out.println("");
+                
+             }
+             
+             
+         }else{
+             System.out.println("La tabla introducida no existe");
+         }
+       
+    }
+        
+    public void insertarDato() throws SQLException {
+          Scanner sc = new Scanner(System.in);
+         
+         System.out.println("------------------------------------------");
+         System.out.println("Escriba la tabla sobre la que quiere insertar un registro");
+         String tablaSeleccionada = sc.next();
+         sc.nextLine();
+         if(existeTabla(tablaSeleccionada)){
+             
+             System.out.println("Introduzca TODOS los valores separados por coma y en orden, ejemplo: 1, 'Santiago', 'Spina'");
+             String valores = sc.nextLine();
+             int filasAfectadas = ejecutarInsertDeleteUpdate("insert into " + tablaSeleccionada + " values (" +valores+ ")" );
+             
+             if(filasAfectadas > 0){
+                 System.out.println("El registro fue insertado correctamente");
+             }else{
+                 System.out.println("El registro no fue insertado");
+             }
+             
+         }else{
+             System.out.println("La tabla introducida no existe");
+         }
+         
+    }
+
+    public void actualizarDato() throws SQLException {
+        Scanner sc = new Scanner(System.in);
+        
+         System.out.println("------------------------------------------");
+         System.out.println("Escriba la tabla sobre la que quiere actualizar un dato");
+         String tablaSeleccionada = sc.next();
+         sc.nextLine();
+         
+         if(existeTabla(tablaSeleccionada)){
+             
+             System.out.println("Ingrese el campo y el valor en formato campo=valor, separados por comas. Ej: nombre='Santiago' ");
+             String valores = sc.nextLine();
+             
+             
+             System.out.println("Introduzca la condicion para la actualizacion. Ej: where id = 1");
+             String condicion = sc.nextLine();
+             int filasAfectadas = ejecutarInsertDeleteUpdate("update " + tablaSeleccionada + " set " + valores +" "+ condicion);
+             
+             if(filasAfectadas > 0){
+                 System.out.println("El registro fue actualizados correctamente");
+             }else{
+                 System.out.println("El registro no fue actualizado");
+             }
+             
+         }else{
+             System.out.println("La tabla introducida no existe");
+         }
+    }
+
+    public void borrarDato() throws SQLException {
+        Scanner sc = new Scanner(System.in);
+        
+         System.out.println("------------------------------------------");
+         System.out.println("Escriba la tabla sobre la que quiere borrar un registro");
+         String tablaSeleccionada = sc.next();
+         sc.nextLine();
+         
+         if(existeTabla(tablaSeleccionada)){
+  
+             System.out.println("Introduzca la condicion para borrar el registro. Ej: where id = 1");
+             String condicion = sc.nextLine();
+             int filasAfectadas = ejecutarInsertDeleteUpdate("delete from " + tablaSeleccionada + " " + condicion);
+             
+             if(filasAfectadas > 0){
+                 System.out.println("El registro fue borrado correctamente");
+             }else{
+                 System.out.println("El registro no fue borrado");
+             }
+             
+         }else{
+             System.out.println("La tabla introducida no existe");
+         }
+    }
     
 }
