@@ -461,13 +461,14 @@ DEFAULT CHARACTER SET = utf8mb3;
 ALTER TABLE `aplicacionmultimedia`.`lista_de_vistos` 
 CHANGE COLUMN `idCalificacion` `idLista` INT NOT NULL AUTO_INCREMENT ;
 
-/*
+
 CREATE TABLE registro_usuarios_creados (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
-    fecha_cambio DATETIME NOT NULL
+    fecha_creacion DATETIME NOT NULL
 );
-*/
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
