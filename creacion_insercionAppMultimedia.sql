@@ -475,8 +475,8 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 
 --  ------------------------------INSERCION DE DATOS ------------------------------
--- Insercion de datos
-INSERT INTO `Usuario` (nombre, correo, contrasena, tipo_suscripcion) VALUES
+
+INSERT INTO Usuario (nombre, correo, contrasena, tipo_suscripcion) VALUES
 ('Juan Pérez', 'juan.perez@gmail.com', 'ContraseñaSegura123', 'premium'),
 ('Ana Gómez', 'ana.gomez@hotmail.com', 'MiContraseña456', 'basica'),
 ('Luis Martínez', 'luis.martinez@yahoo.com', 'Passw0rd!', 'premium'),
@@ -484,7 +484,7 @@ INSERT INTO `Usuario` (nombre, correo, contrasena, tipo_suscripcion) VALUES
 ('Carlos Fernández', 'carlos.fernandez@gmail.com', '12345Segura!', 'premium');
 
 
-INSERT INTO `Pelicula` (titulo, anio_lanzamiento, duracion, url_imagen) VALUES
+INSERT INTO Pelicula (titulo, anio_lanzamiento, duracion, url_imagen) VALUES
 ('Inception', 2010, 148, 'https://m.media-amazon.com/images/I/912AErFSBHL._AC_UF894,1000_QL80_.jpg'),
 ('The Godfather', 1972, 175, 'https://m.media-amazon.com/images/M/MV5BYTJkNGQyZDgtZDQ0NC00MDM0LWEzZWQtYzUzZDEwMDljZWNjXkEyXkFqcGc@._V1_.jpg'),
 ('The Dark Knight', 2008, 152, 'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_.jpg'),
@@ -492,7 +492,7 @@ INSERT INTO `Pelicula` (titulo, anio_lanzamiento, duracion, url_imagen) VALUES
 ('El secreto de sus ojos', 2009, 129, 'https://pics.filmaffinity.com/El_secreto_de_sus_ojos-483213496-large.jpg');
 
 
-INSERT INTO `Serie` (titulo, anio_lanzamiento, num_temporadas, imagen_url) VALUES
+INSERT INTO Serie (titulo, anio_lanzamiento, num_temporadas, imagen_url) VALUES
 ('Breaking Bad', 2008, 5, 'https://es.web.img3.acsta.net/pictures/18/04/04/22/52/3191575.jpg'),
 ('Game of Thrones', 2011, 8, 'https://m.media-amazon.com/images/I/91iY86ZIuOL._AC_UF894,1000_QL80_.jpg'),
 ('Stranger Things', 2016, 3, 'https://www.ecartelera.com/carteles-series/100/124/021_m.jpg'),
@@ -500,7 +500,7 @@ INSERT INTO `Serie` (titulo, anio_lanzamiento, num_temporadas, imagen_url) VALUE
 ('The Office', 2005, 9, 'https://pics.filmaffinity.com/The_Office_Serie_de_TV-210023284-large.jpg');
 
 
-INSERT INTO `Temporada` (numero_temporada, numero_episodios, fecha_lanzamiento, IdSerie) VALUES
+INSERT INTO Temporada (numero_temporada, numero_episodios, fecha_lanzamiento, IdSerie) VALUES
 -- Breaking Bad
 (1, 7, '2008-01-20', 1),
 (2, 13, '2009-03-08', 1),
@@ -541,7 +541,7 @@ INSERT INTO `Temporada` (numero_temporada, numero_episodios, fecha_lanzamiento, 
 (9, 23, '2012-09-20', 5);
 
 
-INSERT INTO `Genero` (idGenero, nombre, descripcion) VALUES
+INSERT INTO Genero (idGenero, nombre, descripcion) VALUES
 (1, 'Acción', 'Películas de acción y aventura.'),
 (2, 'Drama', 'Películas que exploran el drama humano.'),
 (3, 'Comedia', 'Películas de comedia y entretenimiento.'),
@@ -549,7 +549,7 @@ INSERT INTO `Genero` (idGenero, nombre, descripcion) VALUES
 (5, 'Terror', 'Películas de terror y suspenso.');
 
 
-INSERT INTO `Lista_de_vistos` (titulo, tipo_contenido, fecha_agregado, estado, idUsuario, idPelicula, idSerie) VALUES
+INSERT INTO Lista_de_vistos (titulo, tipo_contenido, fecha_agregado, estado, idUsuario, idPelicula, idSerie) VALUES
 ('Inception', 'pelicula', '2023-10-01', 'visto', 1, 1, NULL),
 ('Breaking Bad', 'serie', '2023-10-02', 'en progreso', 2, NULL, 1),
 ('The Godfather', 'pelicula', '2023-10-03', 'por ver', 3, 2, NULL),
@@ -558,7 +558,7 @@ INSERT INTO `Lista_de_vistos` (titulo, tipo_contenido, fecha_agregado, estado, i
 ('The Godfather', 'pelicula', '2023-10-03', 'por ver', 1, 2, NULL);
 
 
-INSERT INTO `Actor` (nombre, fecha_nacimiento, nacionalidad) VALUES
+INSERT INTO Actor (nombre, fecha_nacimiento, nacionalidad) VALUES
 ('Leonardo DiCaprio', '1974-11-11', 'Estadounidense'),
 ('Bryan Cranston', '1956-03-07', 'Estadounidense'),
 ('Natalie Portman', '1981-06-09', 'Israeli'),
@@ -570,14 +570,14 @@ INSERT INTO `Actor` (nombre, fecha_nacimiento, nacionalidad) VALUES
 ('Matt Smith', '1982-10-28', 'Británico'),        
 ('Mindy Kaling', '1979-06-24', 'Estadounidense'); 
 
-INSERT INTO `Pelicula_Genero` (idPelicula, idGenero) VALUES
+INSERT INTO Pelicula_Genero (idPelicula, idGenero) VALUES
 (1, 1), -- Inception, Acción
 (2, 2), -- The Godfather, Drama
 (3, 1), -- The Dark Knight, Acción
 (4, 2), -- Pulp Fiction, Drama
 (5, 2); -- The Shawshank Redemption, Drama
 
-INSERT INTO `Serie_Genero` (idSerie, idGenero) VALUES
+INSERT INTO Serie_Genero (idSerie, idGenero) VALUES
 (1, 2), -- Breaking Bad, Drama
 (2, 4), -- Game of Thrones, Fantasía
 (3, 4), -- Stranger Things, Ciencia Ficción
