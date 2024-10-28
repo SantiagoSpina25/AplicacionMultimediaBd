@@ -1,6 +1,7 @@
-
 package Vista;
+
 import java.sql.*;
+import java.util.Arrays;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -11,31 +12,57 @@ public class JFrameSelect extends javax.swing.JFrame {
 
     ResultSet rs;
     DefaultTableModel modelo;
+
     /**
      * Creates new form JFrameSelect
      */
     public JFrameSelect() {
         initComponents();
     }
-    
+
     public JFrameSelect(ResultSet rs) {
         initComponents();
+        setLocationRelativeTo(null);
         this.rs = rs;
-        
-        String [] titulos;
-        try {
-            while(rs.next()){
-                
-            }
-        } catch (SQLException e) {
-        }
-        
-        
-        modelo = (DefaultTableModel) tblConsulta.getModel();
-        
+
+        modelo = new DefaultTableModel();
         tblConsulta.setModel(modelo);
+
         
-        
+
+        try {
+            //Obtengo los metaDatos del ResultSet. En este caso, nos da el numero de columnas que hay en el       
+            ResultSetMetaData metaData = rs.getMetaData();
+            int numColumnas = metaData.getColumnCount();
+
+             
+            String[] titulosTabla = new String [numColumnas];
+            
+            //Agrego los titulos a la tabla segun el numero de columnas que haya
+            for (int i = 0; i < numColumnas; i++) {
+                titulosTabla[i] = metaData.getColumnName(i+1);
+            }
+            
+            modelo.setColumnIdentifiers(titulosTabla);
+
+            //Relleno la tabla con los datos encontrados
+            while (rs.next()) {
+                //Creo un array de tipo Object para cualquier tipo de atributo (String, int, date, etc) y que funcione
+                Object[] datosFila = new Object[numColumnas];
+                for (int i = 1; i <= numColumnas; i++) {
+                    //getObject(i) devuelve el valor de la columna en esa posicion. En este caso recorre todas las columnas y las guarda en el array
+                    datosFila[i - 1] = rs.getObject(i);
+                }
+                //Termino agregando la fila a la tabla
+                modelo.addRow(datosFila);
+            }
+            
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+
     }
 
     /**
@@ -51,7 +78,7 @@ public class JFrameSelect extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblConsulta = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         tblConsulta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -78,9 +105,9 @@ public class JFrameSelect extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

@@ -69,11 +69,11 @@ CREATE TABLE IF NOT EXISTS `aplicacionMultimedia`.`Temporada` (
   `numero_temporada` INT NOT NULL,
   `numero_episodios` INT NOT NULL,
   `fecha_lanzamiento` DATE NULL,
-  `IdSerie` INT NOT NULL,
+  `idSerie` INT NOT NULL,
   PRIMARY KEY (`idTemporada`),
-  INDEX `fk_Temporada_Serie1_idx` (`IdSerie` ASC) VISIBLE,
+  INDEX `fk_Temporada_Serie1_idx` (`idSerie` ASC) VISIBLE,
   CONSTRAINT `fk_Temporada_Serie1`
-    FOREIGN KEY (`IdSerie`)
+    FOREIGN KEY (`idSerie`)
     REFERENCES `aplicacionMultimedia`.`Serie` (`idSerie`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)

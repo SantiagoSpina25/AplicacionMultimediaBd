@@ -5,7 +5,6 @@
 package Vista;
 
 import Controlador.ConexionMySql;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
@@ -21,23 +20,28 @@ public class JFramePrincipal extends javax.swing.JFrame {
     ConexionMySql conexion = new ConexionMySql("aplicacionmultimedia");
     boolean bdConectada = false;
     String accionActual = "";
-    
+
     public JFramePrincipal() {
         initComponents();
         setLocationRelativeTo(null);
-        btnBuscar.setEnabled(false);
-        btnInsertar.setEnabled(false);
-        btnActualizar.setEnabled(false);
-        btnBorrar.setEnabled(false);
+        
+        //Escondo todos los elementos
+        deshabilitarBotones(false);
+        
         
         lblSeleccionarTabla.setVisible(false);
         lblSeleccionarAtributo.setVisible(false);
         lblSeleccionarCondicion.setVisible(false);
+
+       
+        lblAtributosDisponibles.setVisible(false);
+        lblatts.setVisible(false);
         cmbTabla.setVisible(false);
         txtAtributos.setVisible(false);
         txtCondicion.setVisible(false);
         btnEjecutar.setVisible(false);
         
+         lblAtributosDisponibles.setText("idActor, nombre, fecha_nacimiento, nacionalidad");
     }
 
     /**
@@ -64,6 +68,8 @@ public class JFramePrincipal extends javax.swing.JFrame {
         btnActualizar = new javax.swing.JButton();
         btnEjecutar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        lblatts = new javax.swing.JLabel();
+        lblAtributosDisponibles = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -98,6 +104,11 @@ public class JFramePrincipal extends javax.swing.JFrame {
         cmbTabla.setForeground(new java.awt.Color(255, 255, 255));
         cmbTabla.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "actor", "episodio", "genero", "lista_de_vistos", "pelicula", "pelicula_actor", "pelicula_genero", "registro_usuarios_creados", "serie", "serie_actor", "serie_genero", "temporada", "usuario" }));
         cmbTabla.setToolTipText("Seleccionar la tabla indicada para la consulta");
+        cmbTabla.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbTablaActionPerformed(evt);
+            }
+        });
 
         lblSeleccionarTabla.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblSeleccionarTabla.setForeground(new java.awt.Color(0, 0, 0));
@@ -159,6 +170,13 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("¿Qué desea realizar?");
 
+        lblatts.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblatts.setForeground(new java.awt.Color(0, 0, 0));
+        lblatts.setText("Atributos disponibles: ");
+
+        lblAtributosDisponibles.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        lblAtributosDisponibles.setForeground(new java.awt.Color(0, 0, 0));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -178,30 +196,35 @@ public class JFramePrincipal extends javax.swing.JFrame {
                                     .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(7, 7, 7)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(21, 21, 21)
-                                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26)
-                                .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(83, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(btnEjecutar, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnConectarDb, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(29, 29, 29))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                                .addGap(29, 29, 29))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(21, 21, 21)
+                                        .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(26, 26, 26)
+                                        .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(79, 79, 79)
+                                        .addComponent(lblatts, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap(83, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(lblSeleccionarAtributo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblSeleccionarCondicion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE))
-                                .addComponent(cmbTabla, 0, 400, Short.MAX_VALUE)
-                                .addComponent(txtAtributos))
-                            .addComponent(txtCondicion, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtCondicion, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblSeleccionarAtributo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblSeleccionarCondicion, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+                                    .addComponent(cmbTabla, 0, 400, Short.MAX_VALUE)
+                                    .addComponent(txtAtributos))
+                                .addGap(18, 18, 18)
+                                .addComponent(lblAtributosDisponibles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
@@ -214,16 +237,21 @@ public class JFramePrincipal extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addGap(22, 22, 22)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnInsertar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
-                .addComponent(lblSeleccionarTabla)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cmbTabla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnInsertar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(38, 38, 38)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblSeleccionarTabla)
+                            .addComponent(lblatts))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmbTabla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblAtributosDisponibles, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(49, 49, 49)
                 .addComponent(lblSeleccionarAtributo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtAtributos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -233,7 +261,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCondicion, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEjecutar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -252,46 +280,41 @@ public class JFramePrincipal extends javax.swing.JFrame {
 
     private void btnConectarDbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConectarDbActionPerformed
         try {
-            if(!bdConectada){
+            if (!bdConectada) {
                 conexion.conectar();
                 JOptionPane.showMessageDialog(this, "Base de datos conectada correctamente", "Conexion correcta", JOptionPane.INFORMATION_MESSAGE);
 
                 //Habilito todos los botones 
-                btnBuscar.setEnabled(true);
-                btnInsertar.setEnabled(true);
-                btnActualizar.setEnabled(true);
-                btnBorrar.setEnabled(true);
-                
+                deshabilitarBotones(true);
+
                 //Cambio el texto del boton
                 btnConectarDb.setText("Desconectar DB");
                 bdConectada = true;
-            }else{
+            } else {
                 conexion.desconectar();
                 bdConectada = false;
                 btnConectarDb.setText("Conectar DB");
-                
+
                 //Deshabilito todos los botones y elementos
-                btnBuscar.setEnabled(false);
-                btnInsertar.setEnabled(false);
-                btnActualizar.setEnabled(false);
-                btnBorrar.setEnabled(false);
+                deshabilitarBotones(false);
                 lblSeleccionarTabla.setVisible(false);
                 lblSeleccionarAtributo.setVisible(false);
                 lblSeleccionarCondicion.setVisible(false);
+                lblAtributosDisponibles.setVisible(false);
+                lblatts.setVisible(false);
                 cmbTabla.setVisible(false);
                 txtAtributos.setVisible(false);
                 txtCondicion.setVisible(false);
                 btnEjecutar.setVisible(false);
-                
+
                 JOptionPane.showMessageDialog(this, "Base de datos desconectada correctamente", "Desconexion correcta", JOptionPane.INFORMATION_MESSAGE);
             }
-           
-            
+
         } catch (SQLException e) {
             System.out.println(e);
             JOptionPane.showMessageDialog(this, "Error en la conexion a la base de datos", "Error ocurrido", JOptionPane.ERROR_MESSAGE);
         }
-        
+
     }//GEN-LAST:event_btnConectarDbActionPerformed
 
     private void txtCondicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCondicionActionPerformed
@@ -302,24 +325,28 @@ public class JFramePrincipal extends javax.swing.JFrame {
         lblSeleccionarTabla.setVisible(true);
         lblSeleccionarAtributo.setVisible(true);
         lblSeleccionarCondicion.setVisible(true);
-        cmbTabla.setVisible(true); 
+        lblAtributosDisponibles.setVisible(true);
+        lblatts.setVisible(true);
+        cmbTabla.setVisible(true);
         txtAtributos.setVisible(true);
         txtCondicion.setVisible(true);
         btnEjecutar.setVisible(true);
-        
+
         accionActual = "buscar";
-        
+
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
         lblSeleccionarTabla.setVisible(true);
         lblSeleccionarAtributo.setVisible(true);
         lblSeleccionarCondicion.setVisible(false);
-        cmbTabla.setVisible(true); 
+        lblAtributosDisponibles.setVisible(true);
+        lblatts.setVisible(true);
+        cmbTabla.setVisible(true);
         txtAtributos.setVisible(true);
         txtCondicion.setVisible(false);
         btnEjecutar.setVisible(true);
-        
+
         accionActual = "insertar";
     }//GEN-LAST:event_btnInsertarActionPerformed
 
@@ -327,11 +354,13 @@ public class JFramePrincipal extends javax.swing.JFrame {
         lblSeleccionarTabla.setVisible(true);
         lblSeleccionarAtributo.setVisible(true);
         lblSeleccionarCondicion.setVisible(true);
-        cmbTabla.setVisible(true); 
+        lblAtributosDisponibles.setVisible(true);
+        lblatts.setVisible(true);
+        cmbTabla.setVisible(true);
         txtAtributos.setVisible(true);
         txtCondicion.setVisible(true);
         btnEjecutar.setVisible(true);
-        
+
         accionActual = "actualizar";
     }//GEN-LAST:event_btnActualizarActionPerformed
 
@@ -339,82 +368,96 @@ public class JFramePrincipal extends javax.swing.JFrame {
         lblSeleccionarTabla.setVisible(true);
         lblSeleccionarAtributo.setVisible(false);
         lblSeleccionarCondicion.setVisible(true);
-        cmbTabla.setVisible(true); 
+        cmbTabla.setVisible(true);
         txtAtributos.setVisible(false);
         txtCondicion.setVisible(true);
         btnEjecutar.setVisible(true);
-        
-         accionActual = "borrar";
+
+        accionActual = "borrar";
     }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void btnEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarActionPerformed
-        
+
         String tablaSeleccionada = cmbTabla.getSelectedItem().toString();
         String atributosSeleccionados = txtAtributos.getText();
         String condicionesSeleccionadas = txtCondicion.getText();
-         try {
+
+        try {
             switch (accionActual) {
                 case "buscar":
-                    String [] atributosSeparados = atributosSeleccionados.split(",");
-                    
-                    ResultSet rs = conexion.ejecutarSelect("SELECT " + atributosSeleccionados + " FROM " + tablaSeleccionada + " " + condicionesSeleccionadas);
-                    
-                    JFrameSelect jFrameSelect = new JFrameSelect(rs);
-                    jFrameSelect.setVisible(true);
-                    
-                    
-                    
-                    while(rs.next()){
-                        System.out.print("- ");
-                        for (int i = 0; i < atributosSeparados.length; i++) {
-
-                           //Borro los espacios entre cada atributo
-                           String atributo = atributosSeparados[i].trim();
-                           System.out.print(atributo + ": " + rs.getString(atributo) + " | ");
-                        }
-                       System.out.println("");
-                    }
+                    conexion.ejecutarBusquedaFrame(tablaSeleccionada, atributosSeleccionados, condicionesSeleccionadas);
                     break;
-
                 case "insertar":
-
-                        int filasInsertadas = conexion.ejecutarInsertDeleteUpdate("INSERT INTO " + tablaSeleccionada + " VALUES (" + atributosSeleccionados + ")");
-
-                        if(filasInsertadas > 0){
-                            JOptionPane.showMessageDialog(this, "El registro fue insertado correctamente", "Insercion", JOptionPane.INFORMATION_MESSAGE);
-                        }else{
-                            JOptionPane.showMessageDialog(this, "El registro no fue insertado", "Error", JOptionPane.ERROR_MESSAGE);
-                        }
-
+                    conexion.ejecutarInsercionFrame(tablaSeleccionada, atributosSeleccionados, condicionesSeleccionadas);
                     break;
                 case "actualizar":
-                        int filasActualizadas = conexion.ejecutarInsertDeleteUpdate("UPDATE  " + tablaSeleccionada + " SET " + atributosSeleccionados + " " + condicionesSeleccionadas);
-
-                        if(filasActualizadas > 0){
-                            JOptionPane.showMessageDialog(this, "El registro fue actualizado correctamente", "Insercion", JOptionPane.INFORMATION_MESSAGE);
-                        }else{
-                            JOptionPane.showMessageDialog(this, "El registro no fue actualizado", "Error", JOptionPane.ERROR_MESSAGE);
-                        }
-
+                    conexion.ejecutarActualizacionFrame(tablaSeleccionada, atributosSeleccionados, condicionesSeleccionadas);
                     break;
                 case "borrar":
-                    int filasBorradas = conexion.ejecutarInsertDeleteUpdate("DELETE FROM " + tablaSeleccionada + "  " + condicionesSeleccionadas);
-
-                        if(filasBorradas > 0){
-                            JOptionPane.showMessageDialog(this, "Borrado correctamente", "Insercion", JOptionPane.INFORMATION_MESSAGE);
-                        }else{
-                            JOptionPane.showMessageDialog(this, "El registro no fue borrado correctamente", "Error", JOptionPane.ERROR_MESSAGE);
-                        }
-
+                    conexion.ejecutarBorrarFrame(tablaSeleccionada, atributosSeleccionados, condicionesSeleccionadas);
                     break;
                 default:
                     throw new AssertionError();
-                }
-
-            } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
             }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnEjecutarActionPerformed
+
+    //Segun el item del comboBox que seleccione (tabla), muestro sus atributos disponibles
+    private void cmbTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTablaActionPerformed
+        String tablaSeleccionada = cmbTabla.getSelectedItem().toString();
+
+        switch (tablaSeleccionada) {
+            case "actor":
+                lblAtributosDisponibles.setText("idActor, nombre, fecha_nacimiento, nacionalidad");
+                break;
+            case "episodio":
+                lblAtributosDisponibles.setText("idEpisodio, titulo, duracion, fecha_lanzamiento, idTemporada");
+                break;
+            case "genero":
+                lblAtributosDisponibles.setText("idGenero, nombre, descripcion");
+                break;
+            case "lista_de_vistos":
+                lblAtributosDisponibles.setText("idLista, titulo, tipo_contenido, fecha_agregado, estado, idUsuario, idPelicula, idSerie");
+                break;
+            case "pelicula":
+                lblAtributosDisponibles.setText("idPelicula, titulo, anio_lanzamiento, duracion, url_imagen");
+                break;
+            case "pelicula_actor":
+                lblAtributosDisponibles.setText("idPelicula, idActor");
+                break;
+            case "pelicula_genero":
+                lblAtributosDisponibles.setText("idPelicula, idGenero");
+                break;
+            case "registro_usuarios_creados":
+                lblAtributosDisponibles.setText("id, nombre, fecha_creacion");
+                break;
+            case "Actor":
+                lblAtributosDisponibles.setText("idActor, nombre, fecha_nacimiento, nacionalidad");
+                break;
+            case "serie":
+                lblAtributosDisponibles.setText("idSerie, titulo, anio_lanzamiento, num_temporadas, imagen_url");
+                break;
+            case "serie_actor":
+                lblAtributosDisponibles.setText("idSerie, idActor");
+                break;
+            case "serie_genero":
+                lblAtributosDisponibles.setText("idSerie, idGenero");
+                break;
+            case "temporada":
+                lblAtributosDisponibles.setText("idTemporada, numero_temporada, numero_episodios, fecha_lanzamiento, idSerie");
+                break;
+            case "usuario":
+                lblAtributosDisponibles.setText("idUsuario, nombre, correo, contrasena, tipo_suscripcion");
+                break;
+            default:
+                throw new AssertionError();
+        }
+
+
+    }//GEN-LAST:event_cmbTablaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -461,11 +504,20 @@ public class JFramePrincipal extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmbTabla;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblAtributosDisponibles;
     private javax.swing.JLabel lblSeleccionarAtributo;
     private javax.swing.JLabel lblSeleccionarCondicion;
     private javax.swing.JLabel lblSeleccionarTabla;
     private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblatts;
     private javax.swing.JTextField txtAtributos;
     private javax.swing.JTextField txtCondicion;
     // End of variables declaration//GEN-END:variables
+
+    private void deshabilitarBotones(boolean habilitados) {
+        btnBuscar.setEnabled(habilitados);
+        btnInsertar.setEnabled(habilitados);
+        btnActualizar.setEnabled(habilitados);
+        btnBorrar.setEnabled(habilitados);
+    }
 }
