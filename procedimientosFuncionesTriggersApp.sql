@@ -74,8 +74,6 @@ DELIMITER ;
 select duracionEnHoras(1);
 
 
-
-DROP TRIGGER registrarUsuarioCreado;
 -- -------------------- TRIGGERS --------------------
 DELIMITER //
 

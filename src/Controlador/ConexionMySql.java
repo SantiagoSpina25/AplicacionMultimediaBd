@@ -92,7 +92,6 @@ public class ConexionMySql {
                  condicionSeleccionada = "";
              }
              
-             System.out.println("select " + atributosSeleccionados + " from " + tablaSeleccionada + " " + condicionSeleccionada);
              
              ResultSet rs = ejecutarSelect("select  " + atributosSeleccionados + " from " + tablaSeleccionada + " " + condicionSeleccionada);
              System.out.println("----------"+tablaSeleccionada+"----------");
