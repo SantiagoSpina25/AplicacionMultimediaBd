@@ -349,50 +349,71 @@ public class JFramePrincipal extends javax.swing.JFrame {
 
     private void btnEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarActionPerformed
         
-        switch (accionActual) {
-            case "buscar":
-                String tablaSeleccionada = cmbTabla.getSelectedItem().toString();
-                String atributosSeleccionados = txtAtributos.getText();
-                String condicionesSeleccionadas = txtCondicion.getText();
-                
-                String [] atributosSeparados = atributosSeleccionados.split(",");
-                
-                try {
+        String tablaSeleccionada = cmbTabla.getSelectedItem().toString();
+        String atributosSeleccionados = txtAtributos.getText();
+        String condicionesSeleccionadas = txtCondicion.getText();
+         try {
+            switch (accionActual) {
+                case "buscar":
+                    String [] atributosSeparados = atributosSeleccionados.split(",");
+                    
                     ResultSet rs = conexion.ejecutarSelect("SELECT " + atributosSeleccionados + " FROM " + tablaSeleccionada + " " + condicionesSeleccionadas);
-                     while(rs.next()){
+                    
+                    JFrameSelect jFrameSelect = new JFrameSelect(rs);
+                    jFrameSelect.setVisible(true);
+                    
+                    
+                    
+                    while(rs.next()){
                         System.out.print("- ");
                         for (int i = 0; i < atributosSeparados.length; i++) {
-                            
+
                            //Borro los espacios entre cada atributo
                            String atributo = atributosSeparados[i].trim();
                            System.out.print(atributo + ": " + rs.getString(atributo) + " | ");
                         }
                        System.out.println("");
-                
                     }
-                    
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
+                    break;
+
+                case "insertar":
+
+                        int filasInsertadas = conexion.ejecutarInsertDeleteUpdate("INSERT INTO " + tablaSeleccionada + " VALUES (" + atributosSeleccionados + ")");
+
+                        if(filasInsertadas > 0){
+                            JOptionPane.showMessageDialog(this, "El registro fue insertado correctamente", "Insercion", JOptionPane.INFORMATION_MESSAGE);
+                        }else{
+                            JOptionPane.showMessageDialog(this, "El registro no fue insertado", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+
+                    break;
+                case "actualizar":
+                        int filasActualizadas = conexion.ejecutarInsertDeleteUpdate("UPDATE  " + tablaSeleccionada + " SET " + atributosSeleccionados + " " + condicionesSeleccionadas);
+
+                        if(filasActualizadas > 0){
+                            JOptionPane.showMessageDialog(this, "El registro fue actualizado correctamente", "Insercion", JOptionPane.INFORMATION_MESSAGE);
+                        }else{
+                            JOptionPane.showMessageDialog(this, "El registro no fue actualizado", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+
+                    break;
+                case "borrar":
+                    int filasBorradas = conexion.ejecutarInsertDeleteUpdate("DELETE FROM " + tablaSeleccionada + "  " + condicionesSeleccionadas);
+
+                        if(filasBorradas > 0){
+                            JOptionPane.showMessageDialog(this, "Borrado correctamente", "Insercion", JOptionPane.INFORMATION_MESSAGE);
+                        }else{
+                            JOptionPane.showMessageDialog(this, "El registro no fue borrado correctamente", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+
+                    break;
+                default:
+                    throw new AssertionError();
                 }
-                
-                break;
-            case "insertar":
-                JOptionPane.showMessageDialog(this, "insertar", "insertar", JOptionPane.INFORMATION_MESSAGE);
 
-                break;
-            case "actualizar":
-                JOptionPane.showMessageDialog(this, "actualizar", "actualizar", JOptionPane.INFORMATION_MESSAGE);
-
-                break;
-            case "borrar":
-                JOptionPane.showMessageDialog(this, "borrar", "borrar", JOptionPane.INFORMATION_MESSAGE);
-
-                break;
-            default:
-                throw new AssertionError();
-        }
-        
-        
+            } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
+            }
     }//GEN-LAST:event_btnEjecutarActionPerformed
 
     /**

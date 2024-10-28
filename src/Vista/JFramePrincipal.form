@@ -86,10 +86,8 @@
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                      <Component id="lblSeleccionarAtributo" max="32767" attributes="0"/>
-                                      <Component id="lblSeleccionarCondicion" alignment="0" pref="345" max="32767" attributes="0"/>
-                                  </Group>
+                                  <Component id="lblSeleccionarAtributo" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="lblSeleccionarCondicion" alignment="0" pref="345" max="32767" attributes="0"/>
                                   <Component id="cmbTabla" alignment="0" pref="400" max="32767" attributes="0"/>
                                   <Component id="txtAtributos" alignment="0" max="32767" attributes="0"/>
                               </Group>
